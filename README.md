@@ -37,7 +37,7 @@ Given a command-line application that accepts user input:
 
 ## Mock-Up
 
-![Mockup](./lib/images/mockup1.png)
+![Screenshot 2023-09-19 at 11 34 57 PM](https://github.com/JulianmLacey/SQLEmployeeTrackerCLI/assets/117090683/a6280c94-3ca5-4628-8823-bc2d5c1fe987)
 
 ## Demo
 
