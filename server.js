@@ -13,7 +13,7 @@ const db = mysql.createConnection(
 	console.log(`Connected to the Employee_Tracker database.`)
 );
 
-function q(answers) {
+async function q(answers) {
 	switch (answers.menu[0]) {
 		case "v":
 			const Queries = {
@@ -30,7 +30,7 @@ function q(answers) {
 		case "a":
 			switch (answers.menu[6]) {
 				case "d":
-					inquirer.prompt([{ message: "Enter Department Name: ", name: "dept" }]).then((answers) => {
+					await inquirer.prompt([{ message: "Enter Department Name: ", name: "dept" }]).then((answers) => {
 						db.query(`INSERT INTO department (name) VALUES (?)`, [answers.dept], (err, result) => {
 							//console.log(result);
 						});
@@ -38,7 +38,7 @@ function q(answers) {
 
 					break;
 				case "r":
-					inquirer
+					await inquirer
 						.prompt([
 							{
 								name: "title",
@@ -53,14 +53,14 @@ function q(answers) {
 								message: "Enter New Role Department ID:",
 							},
 						])
-						.then((answers) => {
+						.then(async (answers) => {
 							db.query(`INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`, [answers.title, answers.salary, answers.dept], (err, result) => {
 								//console.log(result);
 							});
 						});
 					break;
 				case " ":
-					inquirer
+					await inquirer
 						.prompt([
 							{
 								name: "first",
@@ -79,7 +79,7 @@ function q(answers) {
 								message: "Enter Employee's Manager's ID:",
 							},
 						])
-						.then((answers) => {
+						.then(async (answers) => {
 							db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`, [answers.first, answers.last, answers.role, answers.manager], (err, result) => {
 								//console.log(result);
 							});
@@ -92,11 +92,8 @@ function q(answers) {
 }
 
 async function run() {
-	const ran = await inquirer.prompt([{ type: "list", message: "Select An Option: ", name: "menu", choices: ["view all departments", "view all roles", "view all employees", "add a department", "add a role", "add an employee", "update an employee role"] }]).then(async (answers) => {
-		const res = await q(answers);
-		if (res) {
-			run();
-		}
+	await inquirer.prompt([{ type: "list", message: "Select An Option: ", name: "menu", choices: ["view all departments", "view all roles", "view all employees", "add a department", "add a role", "add an employee", "update an employee role"] }]).then(async (answers) => {
+		await q(answers);
 	});
 }
 run();
